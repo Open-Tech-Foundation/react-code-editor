@@ -1,0 +1,10 @@
+{
+  "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0",
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"]
+}
