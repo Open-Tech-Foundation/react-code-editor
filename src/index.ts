@@ -1,5 +1,7 @@
-import Editor from "./Editor";
+import Editor from './Editor';
 
-import darkTheme from "./themes/darkTheme";
+// Themes
+import githubTheme from './themes/githubTheme';
+import githubDarkTheme from './themes/githubDarkTheme';
 
-export { Editor, darkTheme };
+export { Editor, githubTheme, githubDarkTheme };
