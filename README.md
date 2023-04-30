@@ -18,6 +18,8 @@
 
 - Multiple languages & themes are supported.
 
+- Line numbers
+
 ## Installation
 
 Using npm

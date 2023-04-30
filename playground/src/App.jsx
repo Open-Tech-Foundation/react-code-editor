@@ -1,35 +1,54 @@
-import { Editor, darkTheme } from "../../src";
-import "./App.css";
+import { Editor, githubTheme, githubDarkTheme } from '../../src';
+import './App.css';
 
 function App() {
-  // const code = `function $initHighlight(block, cls) {
-  //   try {
-  //     if (cls.search(/\bno\\-highlight\b/) != -1)
-  //       return process(block, true, 0x0F) +
-  //              \` class="\${cls}"\`;
-  //   } catch (e) {
-  //     /* handle exception */
-  //   }
-  //   for (var i = 0 / 2; i < classes.length; i++) {
-  //     if (checkCondition(classes[i]) === undefined)
-  //       console.log('undefined');
-  //   }
+  const code = `class MyClass {
+    public static myValue: string;
+    constructor(init: string) {
+      this.myValue = init;
+    }
+  }
+  import fs = require("fs");
+  module MyModule {
+    export interface MyInterface extends Other {
+      myProperty: any;
+    }
+  }
+  declare magicNumber number;
+  myArray.forEach(() => { }); // fat arrow syntax`;
+  const jsCode = `import React from "react";
+  import ReactDOM from "react-dom";
   
-  //   return (
-  //     <div>
-  //       <web-component>{block}</web-component>
-  //     </div>
-  //   )
-  // }
+  function App() {
+    return (
+      <h1>Hello world</h1>
+    );
+  }
   
-  // export  $initHighlight;`;
-  const code = `function Test () { return "hello" }`;
+  ReactDOM.render(<App />, document.getElementById("root"));`;
 
   return (
     <div className="App">
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 500px 1fr' }}>
         <div></div>
-        <Editor code={code} themes={[darkTheme]} style={{ height: "300px" }} title="JavaScript" />
+        <div>
+          <Editor
+            code={code}
+            themes={[githubTheme, githubDarkTheme]}
+            theme="github-dark"
+            style={{ height: '300px' }}
+            title="TypeScript"
+            lang="ts"
+          />
+          <Editor
+            code={jsCode}
+            themes={[githubTheme, githubDarkTheme]}
+            theme="github"
+            style={{ height: '300px', marginTop: '15px' }}
+            title="JavaScript"
+            lang="js"
+          />
+        </div>
         <div></div>
       </div>
     </div>
