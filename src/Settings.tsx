@@ -1,6 +1,15 @@
-export default function Settings({ themes, state, setState }) {
+import type { Dispatch } from 'react';
+import type { EditorState, Theme } from './types';
+
+interface Props {
+  themes: Theme[];
+  state: EditorState;
+  setState: Dispatch<EditorState>;
+}
+
+export default function Settings({ themes, state, setState }: Props) {
   const handleThemeChange = (e) => {
-    const theme = themes.find((i) => i.name === e.target.value);
+    const theme = themes.find((i) => i.name === e.target.value) as Theme;
     setState({ ...state, theme });
   };
 
@@ -31,6 +40,24 @@ export default function Settings({ themes, state, setState }) {
                   <option key={i}>{t.name}</option>
                 ))}
               </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Tab Size: </td>
+            <td>
+              <input
+                type="number"
+                value={state.config.tabSize}
+                onChange={(e) =>
+                  setState({
+                    ...state,
+                    config: {
+                      ...state.config,
+                      tabSize: parseInt(e.target.value),
+                    },
+                  })
+                }
+              />
             </td>
           </tr>
         </tbody>

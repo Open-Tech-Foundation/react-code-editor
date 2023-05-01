@@ -1,8 +1,27 @@
+import { Dispatch, useEffect, useRef } from 'react';
+import { insertAt } from '@opentf/utils';
 import highlightSyntax from './highlightSyntax';
+import type { EditorState } from './types';
 
-export default function EditorContent({ state, setState }) {
+interface Props {
+  state: EditorState;
+  setState: Dispatch<EditorState>;
+}
+
+export default function EditorContent({ state, setState }: Props) {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const hlCode = highlightSyntax(state.value, state.lang, state.theme);
   const newLinesMatch = [...hlCode.matchAll(/\n/g)];
+
+  useEffect(() => {
+    if (textAreaRef.current !== null && state.isTabKey) {
+      textAreaRef.current.setSelectionRange(
+        state.selectionStart + state.config.tabSize,
+        state.selectionStart + state.config.tabSize
+      );
+    }
+    setState({ ...state, isTabKey: false });
+  }, [state.selectionStart, state.isTabKey]);
 
   return (
     <div
@@ -40,7 +59,7 @@ export default function EditorContent({ state, setState }) {
               textAlign: 'right',
               marginBottom: '2px',
               fontSize: '14px',
-              padding: '0px 5px',
+              padding: '0px 4px',
             }}
           >
             {i + 1}
@@ -83,9 +102,26 @@ export default function EditorContent({ state, setState }) {
           dangerouslySetInnerHTML={{ __html: hlCode }}
         />
         <textarea
+          ref={textAreaRef}
           spellCheck={false}
           value={state.value}
           onChange={(e) => setState({ ...state, value: e.target.value })}
+          onKeyDown={(e) => {
+            if (e.key === 'Tab') {
+              e.preventDefault();
+              const { selectionStart } = e.target;
+              setState({
+                ...state,
+                value: insertAt(
+                  state.value,
+                  selectionStart,
+                  ' '.repeat(state.config.tabSize)
+                ),
+                selectionStart,
+                isTabKey: true,
+              });
+            }
+          }}
           style={{
             margin: '0px',
             border: '0px',

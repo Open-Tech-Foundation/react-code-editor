@@ -3,22 +3,39 @@ import { useState } from 'react';
 import Header from './Header';
 import EditorContent from './EditorContent';
 import Settings from './Settings';
+import type { Config, EditorState, Theme } from './types';
+interface Props {
+  value: string;
+  themes: Theme[];
+  theme: string;
+  style: Record<string, string>;
+  title: string;
+  lang: string;
+  config: Config;
+}
 
 export default function Editor({
-  code,
+  value,
   themes = [],
   theme,
   style,
   title = '',
   lang,
-}) {
-  const [state, setState] = useState({
-    value: code,
+  config,
+}: Props) {
+  const curConfig: Config = {
+    tabSize: config?.tabSize || 2,
+  };
+  const [state, setState] = useState<EditorState>({
+    value,
     errors: '',
     showErrors: false,
     showSettings: false,
-    theme: themes.find((i) => i.name === theme) || themes[0],
+    theme: themes.find((i) => i.name === theme) || (themes[0] as Theme),
     lang,
+    isTabKey: false,
+    selectionStart: 0,
+    config: curConfig,
   });
 
   return (
