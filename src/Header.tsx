@@ -91,6 +91,13 @@ export default function Header({ title, state, setState }) {
             background: 'inherit',
             cursor: 'pointer',
           }}
+          onClick={() =>
+            setState({
+              ...state,
+              showErrors: false,
+              showSettings: !state.showSettings,
+            })
+          }
         >
           <svg
             style={{ fill: 'white', width: '20px' }}

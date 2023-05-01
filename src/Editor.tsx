@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
 import Header from './Header';
-import highlightSyntax from './highlightSyntax';
 import EditorContent from './EditorContent';
+import Settings from './Settings';
 
 export default function Editor({
   code,
   themes = [],
-  theme = 'Dark',
+  theme,
   style,
   title = '',
   lang,
@@ -16,9 +16,10 @@ export default function Editor({
     value: code,
     errors: '',
     showErrors: false,
+    showSettings: false,
+    theme: themes.find((i) => i.name === theme) || themes[0],
+    lang,
   });
-  const curTheme = themes.find((i) => i.name === theme);
-  const hlCode = highlightSyntax(state.value, lang, curTheme);
 
   return (
     <div
@@ -30,12 +31,7 @@ export default function Editor({
       }}
     >
       <Header title={title} state={state} setState={setState} />
-      <EditorContent
-        hlCode={hlCode}
-        setState={setState}
-        state={state}
-        theme={curTheme}
-      />
+      <EditorContent setState={setState} state={state} />
       {state.showErrors && (
         <div
           style={{
@@ -54,6 +50,9 @@ export default function Editor({
         >
           <pre>{state.errors}</pre>
         </div>
+      )}
+      {state.showSettings && (
+        <Settings themes={themes} state={state} setState={setState} />
       )}
     </div>
   );

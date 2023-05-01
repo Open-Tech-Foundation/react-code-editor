@@ -18,6 +18,8 @@
 
 - Multiple languages & themes are supported.
 
+- Format code with [Prettier](https://prettier.io/)
+
 - Line numbers
 
 ## Installation

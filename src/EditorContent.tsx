@@ -1,12 +1,15 @@
-export default function EditorContent({ hlCode, theme, state, setState }) {
+import highlightSyntax from './highlightSyntax';
+
+export default function EditorContent({ state, setState }) {
+  const hlCode = highlightSyntax(state.value, state.lang, state.theme);
   const newLinesMatch = [...hlCode.matchAll(/\n/g)];
 
   return (
     <div
       style={{
         boxSizing: 'border-box',
-        color: theme.color,
-        background: theme.background,
+        color: state.theme.color,
+        background: state.theme.background,
         height: 'calc(100% - 30px)',
         display: 'grid',
         gridTemplateColumns: 'auto 1fr',
@@ -15,10 +18,10 @@ export default function EditorContent({ hlCode, theme, state, setState }) {
     >
       <div
         style={{
-          backgroundColor: theme.name.toLowerCase().includes('dark')
+          backgroundColor: state.theme.name.toLowerCase().includes('dark')
             ? 'inherit'
             : '#f5f5f5',
-          color: theme.name.toLowerCase().includes('dark')
+          color: state.theme.name.toLowerCase().includes('dark')
             ? 'lightgray'
             : '#6c6c6c',
           borderRight: '1px solid #ddd',
