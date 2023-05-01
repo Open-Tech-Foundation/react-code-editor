@@ -1,36 +1,102 @@
-import React from "react";
+import { useState } from 'react';
+import prettier from 'prettier/esm/standalone.mjs';
+import babelParser from 'prettier/esm/parser-babel.mjs';
 
-export default function Header({ title }) {
+export default function Header({ title, value, setValue }) {
+  const [error, setError] = useState<string>('');
+
+  const handleFormat = () => {
+    try {
+      setValue(
+        prettier.format(value, {
+          parser: 'babel',
+          plugins: [babelParser],
+        })
+      );
+      setError('');
+    } catch (error) {
+      setError(error as string);
+      console.log(error);
+    }
+  };
   return (
     <div
       style={{
-        boxSizing: "border-box",
-        height: "30px",
-        padding: "5px 10px",
-        background: "#0074D9",
-        color: "white",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
+        boxSizing: 'border-box',
+        height: '30px',
+        padding: '5px 10px',
+        background: '#0074D9',
+        color: 'white',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       }}
     >
       <span
-        style={{ fontSize: "12px", fontWeight: "bold", userSelect: "none" }}
+        style={{ fontSize: '12px', fontWeight: 'bold', userSelect: 'none' }}
       >
         {title}
       </span>
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {error && (
+          <button
+            title="Errors"
+            style={{
+              marginRight: '10px',
+              fontSize: '12px',
+              border: '0px',
+              padding: '0px 5px',
+              background: 'white',
+              cursor: 'pointer',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <svg
+              style={{ fill: 'red', width: '20px' }}
+              focusable="false"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+            </svg>
+            <span style={{ color: 'red' }}>Errors</span>
+          </button>
+        )}
         <button
+          style={{
+            marginRight: '10px',
+            fontSize: '12px',
+            border: 0,
+            padding: 0,
+            background: 'inherit',
+            cursor: 'pointer',
+          }}
+          onClick={handleFormat}
+          title="Format"
+        >
+          <svg
+            style={{ fill: 'white', width: '20px' }}
+            focusable="false"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+          >
+            <path d="M3 21h18v-2H3v2zm0-4h18v-2H3v2zm0-4h18v-2H3v2zm0-4h18V7H3v2zm0-6v2h18V3H3z"></path>
+          </svg>
+        </button>
+        <button
+          title="Settings"
           style={{
             border: 0,
             padding: 0,
             margin: 0,
-            background: "inherit",
-            cursor: "pointer",
+            background: 'inherit',
+            cursor: 'pointer',
           }}
         >
           <svg
-            style={{ fill: "white", width: "20px", marginTop: "5px" }}
+            style={{ fill: 'white', width: '20px' }}
             focusable="false"
             aria-hidden="true"
             viewBox="0 0 24 24"

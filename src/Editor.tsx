@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+
 import Header from './Header';
 import highlightSyntax from './highlightSyntax';
 
@@ -13,7 +14,6 @@ export default function Editor({
   const [value, setValue] = useState(code);
   const curTheme = themes.find((i) => i.name === theme);
   const hlCode = highlightSyntax(value, lang, curTheme);
-
   const newLinesMatch = [...hlCode.matchAll(/\n/g)];
 
   return (
@@ -24,7 +24,7 @@ export default function Editor({
         boxSizing: 'border-box',
       }}
     >
-      <Header title={title} />
+      <Header title={title} value={value} setValue={setValue} />
       <div
         style={{
           boxSizing: 'border-box',
@@ -50,6 +50,7 @@ export default function Editor({
             top: 0,
             left: 0,
             zIndex: 1,
+            userSelect: 'none',
           }}
         >
           {new Array(newLinesMatch.length + 1).fill('').map((a, i) => (
