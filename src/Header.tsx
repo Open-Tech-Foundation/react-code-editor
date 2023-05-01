@@ -1,22 +1,16 @@
-import { useState } from 'react';
 import prettier from 'prettier/esm/standalone.mjs';
 import babelParser from 'prettier/esm/parser-babel.mjs';
 
-export default function Header({ title, value, setValue }) {
-  const [error, setError] = useState<string>('');
-
+export default function Header({ title, state, setState }) {
   const handleFormat = () => {
     try {
-      setValue(
-        prettier.format(value, {
-          parser: 'babel',
-          plugins: [babelParser],
-        })
-      );
-      setError('');
-    } catch (error) {
-      setError(error as string);
-      console.log(error);
+      const value = prettier.format(state.value, {
+        parser: 'babel',
+        plugins: [babelParser],
+      });
+      setState({ ...state, value, errors: '' });
+    } catch (error: unknown) {
+      setState({ ...state, errors: (error as Error).message });
     }
   };
   return (
@@ -38,7 +32,7 @@ export default function Header({ title, value, setValue }) {
         {title}
       </span>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {error && (
+        {state.errors.length > 0 && (
           <button
             title="Errors"
             style={{
@@ -52,6 +46,9 @@ export default function Header({ title, value, setValue }) {
               display: 'flex',
               alignItems: 'center',
             }}
+            onClick={() =>
+              setState({ ...state, showErrors: !state.showErrors })
+            }
           >
             <svg
               style={{ fill: 'red', width: '20px' }}
