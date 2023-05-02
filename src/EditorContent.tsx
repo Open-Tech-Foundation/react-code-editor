@@ -16,8 +16,8 @@ export default function EditorContent({ state, setState }: Props) {
   useEffect(() => {
     if (textAreaRef.current !== null && state.isTabKey) {
       textAreaRef.current.setSelectionRange(
-        state.selectionStart + state.config.tabSize,
-        state.selectionStart + state.config.tabSize
+        state.selectionStart + state.config.indentSize,
+        state.selectionStart + state.config.indentSize
       );
     }
     setState({ ...state, isTabKey: false });
@@ -107,6 +107,7 @@ export default function EditorContent({ state, setState }: Props) {
           value={state.value}
           onChange={(e) => setState({ ...state, value: e.target.value })}
           onKeyDown={(e) => {
+            const indentChar = state.config.indent === 'Tab' ? '\t' : ' ';
             if (e.key === 'Tab') {
               e.preventDefault();
               const { selectionStart } = e.target;
@@ -115,7 +116,7 @@ export default function EditorContent({ state, setState }: Props) {
                 value: insertAt(
                   state.value,
                   selectionStart,
-                  ' '.repeat(state.config.tabSize)
+                  indentChar.repeat(state.config.indentSize)
                 ),
                 selectionStart,
                 isTabKey: true,
@@ -153,6 +154,7 @@ export default function EditorContent({ state, setState }: Props) {
             whiteSpace: 'pre',
             overflow: 'hidden',
           }}
+          {...state.config.textArea}
         />
       </div>
     </div>

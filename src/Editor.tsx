@@ -3,16 +3,7 @@ import { useState } from 'react';
 import Header from './Header';
 import EditorContent from './EditorContent';
 import Settings from './Settings';
-import type { Config, EditorState, Theme } from './types';
-interface Props {
-  value: string;
-  themes: Theme[];
-  theme: string;
-  style: Record<string, string>;
-  title: string;
-  lang: string;
-  config: Config;
-}
+import type { Config, EditorProps, EditorState, Theme } from './types';
 
 export default function Editor({
   value,
@@ -22,9 +13,11 @@ export default function Editor({
   title = '',
   lang,
   config,
-}: Props) {
+}: EditorProps) {
   const curConfig: Config = {
-    tabSize: config?.tabSize || 2,
+    indent: config?.indent || 'Space',
+    indentSize: config?.indentSize || 2,
+    textArea: config?.textArea || {},
   };
   const [state, setState] = useState<EditorState>({
     value,

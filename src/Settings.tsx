@@ -1,5 +1,5 @@
-import type { Dispatch } from 'react';
-import type { EditorState, Theme } from './types';
+import type { Dispatch, FormEvent } from 'react';
+import type { EditorState, Indent, Theme } from './types';
 
 interface Props {
   themes: Theme[];
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function Settings({ themes, state, setState }: Props) {
-  const handleThemeChange = (e) => {
+  const handleThemeChange = (e: FormEvent<HTMLSelectElement>) => {
     const theme = themes.find((i) => i.name === e.target.value) as Theme;
     setState({ ...state, theme });
   };
@@ -33,7 +33,7 @@ export default function Settings({ themes, state, setState }: Props) {
       <table>
         <tbody>
           <tr>
-            <td>Theme: </td>
+            <td style={{ padding: '10px' }}>Theme: </td>
             <td>
               <select value={state.theme.name} onChange={handleThemeChange}>
                 {themes.map((t, i) => (
@@ -43,17 +43,37 @@ export default function Settings({ themes, state, setState }: Props) {
             </td>
           </tr>
           <tr>
-            <td>Tab Size: </td>
+            <td style={{ padding: '10px' }}>Indent: </td>
             <td>
-              <input
-                type="number"
-                value={state.config.tabSize}
+              <select
+                value={state.config.indent}
                 onChange={(e) =>
                   setState({
                     ...state,
                     config: {
                       ...state.config,
-                      tabSize: parseInt(e.target.value),
+                      indent: e.target.value as Indent,
+                    },
+                  })
+                }
+              >
+                <option>Tab</option>
+                <option>Space</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td style={{ padding: '10px' }}>Indent Size: </td>
+            <td>
+              <input
+                type="number"
+                value={state.config.indentSize}
+                onChange={(e) =>
+                  setState({
+                    ...state,
+                    config: {
+                      ...state.config,
+                      indentSize: parseInt(e.target.value),
                     },
                   })
                 }

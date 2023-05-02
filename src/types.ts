@@ -1,5 +1,9 @@
+export type Indent = 'Tab' | 'Space';
+
 export type Config = {
-  tabSize: number;
+  indent: Indent;
+  indentSize: number;
+  textArea: Record<string, unknown>;
 };
 
 export type Theme = {
@@ -19,4 +23,13 @@ export interface EditorState {
   isTabKey: boolean;
   selectionStart: number;
   config: Config;
+}
+export interface EditorProps {
+  value: string;
+  lang: string;
+  themes: Theme[];
+  theme?: string;
+  style?: Record<string, string>;
+  title?: string;
+  config?: Partial<Config>;
 }
