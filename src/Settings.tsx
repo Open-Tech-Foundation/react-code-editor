@@ -1,5 +1,6 @@
 import type { Dispatch, FormEvent } from 'react';
 import type { EditorState, Indent, Theme } from './types';
+import languages from './languages';
 
 interface Props {
   themes: Theme[];
@@ -78,6 +79,21 @@ export default function Settings({ themes, state, setState }: Props) {
                   })
                 }
               />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ padding: '10px' }}>Languages: </td>
+            <td>
+              <select
+                value={state.lang.highlight}
+                onChange={(e) =>
+                  setState({ ...state, lang: languages[e.target.value] })
+                }
+              >
+                {Object.keys(languages).map((l, i) => (
+                  <option key={i}>{l}</option>
+                ))}
+              </select>
             </td>
           </tr>
         </tbody>

@@ -10,7 +10,11 @@ interface Props {
 
 export default function EditorContent({ state, setState }: Props) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const hlCode = highlightSyntax(state.value, state.lang, state.theme);
+  const hlCode = highlightSyntax(
+    state.value,
+    state.lang.highlight,
+    state.theme
+  );
   const newLinesMatch = [...hlCode.matchAll(/\n/g)];
 
   useEffect(() => {

@@ -1,3 +1,5 @@
+import type languages from './languages';
+
 export type Indent = 'Tab' | 'Space';
 
 export type Config = {
@@ -19,17 +21,22 @@ export interface EditorState {
   showErrors: boolean;
   showSettings: boolean;
   theme: Theme;
-  lang: string;
+  lang: Lang;
   isTabKey: boolean;
   selectionStart: number;
   config: Config;
 }
 export interface EditorProps {
   value: string;
-  lang: string;
   themes: Theme[];
+  lang?: keyof typeof languages;
   theme?: string;
   style?: Record<string, string>;
   title?: string;
   config?: Partial<Config>;
 }
+
+export type Lang = {
+  highlight: string;
+  parser: string | null;
+};

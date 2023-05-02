@@ -3,54 +3,7 @@ import { Editor, githubTheme, githubDarkTheme } from '../../src';
 import './App.css';
 
 function App() {
-  const code = `import React, { useState } from "react";
-  import ReactDOM from "react-dom";
-  
-  import "./styles.css";
-  import Editor from "react-simple-code-editor";
-  import { highlight, languages } from "prismjs/components/prism-core";
-  import "prismjs/components/prism-clike";
-  import "prismjs/components/prism-javascript";
-  import "prismjs/themes/prism.css";
-  
-  const code = \`function add(a, b) {
-    return a + b;
-  }
-  
-  const a = 123;
-  \`;
-  
-  const hightlightWithLineNumbers = (input, language) =>
-    highlight(input, language)
-      .split("\n")
-      .map((line, i) => \`<span class='editorLineNumber'>\${i + 1}</span>\${line}\`)
-      .join("\n");
-  
-  function App() {
-    const [codeValue, setCodeValue] = useState(code);
-  
-    return (
-      <Editor
-        value={codeValue}
-        onValueChange={code => setCodeValue(code)}
-        highlight={code => hightlightWithLineNumbers(code, languages.js)}
-        padding={10}
-        textareaId="codeArea"
-        className="editor"
-        style={{
-          fontFamily: '"Fira code", "Fira Mono", monospace',
-          fontSize: 18,
-          outline: 0
-        }}
-      />
-    );
-  }
-  
-  const rootElement = document.getElementById("root");
-  ReactDOM.render(<App />, rootElement);
-  `;
-
-  const jsCode = `import React from "react";
+  const jsxCode = `import React from "react";
   import ReactDOM from "react-dom";
   
   function App() {
@@ -60,6 +13,36 @@ function App() {
   }
   
   ReactDOM.render(<App />, document.getElementById("root"));`;
+
+  const jsonCode = `[
+    {
+      "title": "apples",
+      "count": [12000, 20000],
+      "description": {"text": "...", "sensitive": false}
+    },
+    {
+      "title": "oranges",
+      "count": [17500, null],
+      "description": {"text": "...", "sensitive": false}
+    }
+  ]`;
+
+  const cssCode = `@font-face {
+    font-family: Chunkfive; src: url('Chunkfive.otf');
+  }
+  
+  body, .usertext {
+    color: #F0F0F0; background: #600;
+    font-family: Chunkfive, sans;
+    --heading-1: 30px/32px Helvetica, sans-serif;
+  }
+  
+  @import url(print.css);
+  @media print {
+    a[href^=http]::after {
+      content: attr(href)
+    }
+  }`;
 
   return (
     <div className="App">
@@ -75,11 +58,11 @@ function App() {
             lang="js"
           /> */}
           <Editor
-            value={jsCode}
+            value={jsonCode}
             themes={[githubTheme, githubDarkTheme]}
             style={{ height: '300px', marginTop: '15px' }}
-            title="App.jsx"
-            lang="js"
+            title="config.json"
+            lang="JSON"
             // config={{ textArea: { readOnly: true } }}
           />
         </div>

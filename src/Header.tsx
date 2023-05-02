@@ -1,12 +1,34 @@
 import prettier from 'prettier/esm/standalone.mjs';
 import babelParser from 'prettier/esm/parser-babel.mjs';
+import cssParser from 'prettier/esm/parser-postcss.mjs';
+import graphqlParser from 'prettier/esm/parser-graphql.mjs';
+import htmlParser from 'prettier/esm/parser-html.mjs';
+import markdownParser from 'prettier/esm/parser-markdown.mjs';
+import typescriptParser from 'prettier/esm/parser-typescript.mjs';
+import yamlParser from 'prettier/esm/parser-yaml.mjs';
+import type { EditorState } from './types';
+import type { Dispatch } from 'react';
 
-export default function Header({ title, state, setState }) {
+interface Props {
+  title: string;
+  state: EditorState;
+  setState: Dispatch<EditorState>;
+}
+
+export default function Header({ title, state, setState }: Props) {
   const handleFormat = () => {
     try {
       const value = prettier.format(state.value, {
-        parser: 'babel',
-        plugins: [babelParser],
+        parser: state.lang.parser,
+        plugins: [
+          babelParser,
+          cssParser,
+          graphqlParser,
+          htmlParser,
+          markdownParser,
+          typescriptParser,
+          yamlParser,
+        ],
       });
       setState({ ...state, value, errors: '' });
     } catch (error: unknown) {
@@ -72,9 +94,13 @@ export default function Header({ title, state, setState }) {
           }}
           onClick={handleFormat}
           title="Format"
+          disabled={state.lang.parser === null}
         >
           <svg
-            style={{ fill: 'white', width: '20px' }}
+            style={{
+              fill: state.lang.parser === null ? 'gray' : 'white',
+              width: '20px',
+            }}
             focusable="false"
             aria-hidden="true"
             viewBox="0 0 24 24"

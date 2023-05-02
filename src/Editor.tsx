@@ -3,7 +3,8 @@ import { useState } from 'react';
 import Header from './Header';
 import EditorContent from './EditorContent';
 import Settings from './Settings';
-import type { Config, EditorProps, EditorState, Theme } from './types';
+import type { Config, EditorProps, EditorState, Lang, Theme } from './types';
+import languages from './languages';
 
 export default function Editor({
   value,
@@ -25,7 +26,7 @@ export default function Editor({
     showErrors: false,
     showSettings: false,
     theme: themes.find((i) => i.name === theme) || (themes[0] as Theme),
-    lang,
+    lang: languages[lang] || languages['Plaintext'],
     isTabKey: false,
     selectionStart: 0,
     config: curConfig,
