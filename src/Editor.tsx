@@ -46,9 +46,8 @@ export default function Editor({
       {state.showErrors && (
         <div
           style={{
-            background: 'rgb(253, 237, 237)',
-            color: 'rgb(95, 33, 32)',
-            padding: '15px',
+            background: 'black',
+            color: '#ff5555',
             boxSizing: 'border-box',
             width: '100%',
             height: 'calc(100% - 30px)',
@@ -57,9 +56,13 @@ export default function Editor({
             top: '30px',
             left: '0px',
             zIndex: '2',
+            lineHeight: '1.3',
+            fontWeight: 'bold',
           }}
         >
-          <pre>{state.errors}</pre>
+          <div style={{ padding: '15px', width: '100%' }}>
+            <pre style={{ margin: 0 }}>{state.errors}</pre>
+          </div>
         </div>
       )}
       {state.showSettings && (
