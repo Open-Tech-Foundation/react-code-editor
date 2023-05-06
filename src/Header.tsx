@@ -30,9 +30,9 @@ export default function Header({ title, state, setState }: Props) {
           yamlParser,
         ],
       });
-      setState({ ...state, value, errors: '' });
+      setState({ ...state, value, errors: [] });
     } catch (error: unknown) {
-      setState({ ...state, errors: (error as Error).message });
+      setState({ ...state, errors: [(error as Error).message] });
     }
   };
   return (
@@ -56,7 +56,7 @@ export default function Header({ title, state, setState }: Props) {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {state.errors.length > 0 && (
           <button
-            title="Errors"
+            title="Problems"
             style={{
               marginRight: '10px',
               fontSize: '12px',
@@ -69,18 +69,27 @@ export default function Header({ title, state, setState }: Props) {
               alignItems: 'center',
             }}
             onClick={() =>
-              setState({ ...state, showErrors: !state.showErrors })
+              setState({ ...state, showProblems: !state.showProblems })
             }
           >
             <svg
-              style={{ fill: 'red', width: '20px' }}
+              style={{ fill: '#FF4136', width: '20px' }}
               focusable="false"
               aria-hidden="true"
               viewBox="0 0 24 24"
             >
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
             </svg>
-            <span style={{ color: 'red' }}>Errors</span>
+            <span style={{ marginRight: '5px' }}>{state.errors.length}</span>
+            <svg
+              style={{ fill: '#FFDC00', width: '20px' }}
+              focusable="false"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+            >
+              <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
+            </svg>
+            <span style={{ marginRight: '5px' }}>{state.warnings.length}</span>
           </button>
         )}
         <button
@@ -120,7 +129,6 @@ export default function Header({ title, state, setState }: Props) {
           onClick={() =>
             setState({
               ...state,
-              showErrors: false,
               showSettings: !state.showSettings,
             })
           }

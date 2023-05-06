@@ -1,73 +1,72 @@
 import { useState } from 'react';
-
 import Header from './Header';
 import EditorContent from './EditorContent';
 import Settings from './Settings';
+import lightTheme from './themes/light';
 import type { Config, EditorProps, EditorState, Lang, Theme } from './types';
-import languages from './languages';
+import Problems from './Problems';
+import darkTheme from './themes/dark';
+import jsonLang from './languages/json';
+import plainTextLang from './languages/plainText';
 
-export default function Editor({
-  value,
-  themes = [],
-  theme,
-  style,
-  title = '',
-  lang,
-  config,
-}: EditorProps) {
-  const curConfig: Config = {
-    indent: config?.indent || 'Space',
-    indentSize: config?.indentSize || 2,
-    textArea: config?.textArea || {},
+export default function Editor(props: EditorProps) {
+  const languages = [jsonLang, plainTextLang, ...(props.languages || [])];
+  const themes = [lightTheme, darkTheme, ...(props.themes || [])];
+  const config: Config = {
+    indent: props.config?.indent || 'Space',
+    indentSize: props.config?.indentSize || 2,
+    textArea: props.config?.textArea || {},
   };
   const [state, setState] = useState<EditorState>({
-    value,
-    errors: '',
-    showErrors: false,
+    value: props.value,
+    errors: [],
+    warnings: [],
     showSettings: false,
-    theme: themes.find((i) => i.name === theme) || (themes[0] as Theme),
-    lang: languages[lang] || languages['Plaintext'],
-    isTabKey: false,
-    selectionStart: 0,
-    config: curConfig,
+    showProblems: false,
+    theme: themes.find((i) => i.name === (props.theme || 'Light')) as Theme,
+    lang: languages.find(
+      (i) => i.name === (props.lang || 'Plain Text')
+    ) as Lang,
+    cursorPos: 0,
+    config,
+    isReady: true,
   });
+
+  const renderContent = () => {
+    if (state.showSettings) {
+      return (
+        <Settings
+          themes={themes}
+          languages={languages}
+          state={state}
+          setState={setState}
+        />
+      );
+    }
+
+    if (state.showProblems) {
+      return <Problems errors={state.errors} warnings={state.warnings} />;
+    }
+
+    return null;
+  };
 
   return (
     <div
       style={{
-        ...style,
+        ...props.style,
         border: '1px solid lightgray',
         boxSizing: 'border-box',
         position: 'relative',
       }}
     >
-      <Header title={title} state={state} setState={setState} />
-      <EditorContent setState={setState} state={state} />
-      {state.showErrors && (
-        <div
-          style={{
-            background: 'black',
-            color: '#ff5555',
-            boxSizing: 'border-box',
-            width: '100%',
-            height: 'calc(100% - 30px)',
-            overflow: 'auto',
-            position: 'absolute',
-            top: '30px',
-            left: '0px',
-            zIndex: '2',
-            lineHeight: '1.3',
-            fontWeight: 'bold',
-          }}
-        >
-          <div style={{ padding: '15px', width: '100%' }}>
-            <pre style={{ margin: 0 }}>{state.errors}</pre>
-          </div>
-        </div>
-      )}
-      {state.showSettings && (
-        <Settings themes={themes} state={state} setState={setState} />
-      )}
+      <Header
+        title={props.title || 'Untitled'}
+        state={state}
+        setState={setState}
+      />
+      {state.isReady && <EditorContent setState={setState} state={state} />}
+      {renderContent()}
     </div>
   );
 }

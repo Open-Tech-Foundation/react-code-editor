@@ -10,22 +10,17 @@ interface Props {
 
 export default function EditorContent({ state, setState }: Props) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const hlCode = highlightSyntax(
-    state.value,
-    state.lang.highlight,
-    state.theme
-  );
+  const hlCode = highlightSyntax(state);
   const newLinesMatch = [...hlCode.matchAll(/\n/g)];
 
   useEffect(() => {
-    if (textAreaRef.current !== null && state.isTabKey) {
+    if (textAreaRef.current !== null) {
       textAreaRef.current.setSelectionRange(
-        state.selectionStart + state.config.indentSize,
-        state.selectionStart + state.config.indentSize
+        state.cursorPos + state.config.indentSize,
+        state.cursorPos + state.config.indentSize
       );
     }
-    setState({ ...state, isTabKey: false });
-  }, [state.selectionStart, state.isTabKey]);
+  }, [state.cursorPos]);
 
   return (
     <div
@@ -122,8 +117,7 @@ export default function EditorContent({ state, setState }: Props) {
                   selectionStart,
                   indentChar.repeat(state.config.indentSize)
                 ),
-                selectionStart,
-                isTabKey: true,
+                cursorPos: selectionStart,
               });
             }
           }}

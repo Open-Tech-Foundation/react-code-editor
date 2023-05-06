@@ -1,20 +1,79 @@
-import hljs from "highlight.js/lib/common";
+import type { EditorState } from './types';
 
-export default function highlightSyntax(code, lang, theme) {
-  const hlCode = hljs.highlight(code, { language: lang }).value;
-  const regexp = /class="(.+?)"/g;
-  const matches = hlCode.matchAll(regexp);
-  let str = "";
-  let curIndex = 0;
+function startsWith(s: string, re: string) {
+  const match = new RegExp(re).exec(s);
+  return match && match.index === 0;
+}
 
-  for (const match of matches) {
-    str += hlCode.substring(curIndex, match.index);
-    const className = match[1].split(" ").find((i) => i.includes("hljs"));
-    str += `style="${theme.getStyles(className)}"`;
-    curIndex = match.index + match[0].length;
+export default function highlightSyntax(state: EditorState) {
+  if (state.lang.tokens.length === 0) {
+    return state.value;
   }
 
-  str += hlCode.substring(curIndex, hlCode.length);
+  let str = '';
+  let out = '';
+  const codeTokens = [];
+  const spaceTokens = state.lang.tokens.filter((t) => t.s);
 
-  return str;
+  function setCodeTokens(s: string) {
+    let i = 0;
+    let match;
+    const tk = state.lang.tokens.find((tk) => {
+      match = s.match(tk.p);
+      return match !== null;
+    });
+
+    if (match) {
+      const first = s.slice(i, match.index);
+
+      if (first) {
+        i += first.length;
+        codeTokens.push(setCodeTokens(first));
+      }
+
+      codeTokens.push({ t: tk?.t, v: match[0] });
+      i += match[0].length;
+      const last = s.slice(i);
+      if (last) {
+        i += last.length;
+        codeTokens.push(setCodeTokens(last));
+      }
+    }
+
+    return s.slice(i);
+  }
+
+  for (let i = 0; i < state.value.length; i++) {
+    const char = state.value[i];
+
+    if (char === ' ') {
+      const matchBegin = spaceTokens.some((stk) => startsWith(str, stk.b));
+      if (matchBegin) {
+        str += char;
+      } else {
+        codeTokens.push(char);
+        setCodeTokens(str);
+      }
+      continue;
+    }
+    if (char === '\n') {
+      str = setCodeTokens(str);
+      codeTokens.push(char);
+      continue;
+    }
+
+    str += char;
+  }
+
+  codeTokens.push(setCodeTokens(str));
+
+  codeTokens.forEach((ct) => {
+    if (typeof ct === 'object') {
+      out += `<span style="${state.theme.getStyles(ct.t)}">${ct.v}</span>`;
+      return;
+    }
+    out += ct;
+  });
+
+  return out;
 }

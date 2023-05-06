@@ -1,21 +1,35 @@
-import type { Dispatch, FormEvent } from 'react';
-import type { EditorState, Indent, Theme } from './types';
-import languages from './languages';
-
+import { Dispatch, FormEvent, useEffect, useRef } from 'react';
+import type { EditorState, Indent, Lang, Theme } from './types';
 interface Props {
   themes: Theme[];
+  languages: Lang[];
   state: EditorState;
   setState: Dispatch<EditorState>;
 }
 
-export default function Settings({ themes, state, setState }: Props) {
+export default function Settings({
+  themes,
+  languages,
+  state,
+  setState,
+}: Props) {
+  const settingsRef = useRef<HTMLDivElement>(null);
+
   const handleThemeChange = (e: FormEvent<HTMLSelectElement>) => {
     const theme = themes.find((i) => i.name === e.target.value) as Theme;
     setState({ ...state, theme });
   };
 
+  useEffect(() => {
+    if (settingsRef.current !== null) {
+      settingsRef.current.focus();
+    }
+  }, []);
+
   return (
     <div
+      ref={settingsRef}
+      tabIndex={0}
       style={{
         background: 'white',
         color: 'black',
@@ -28,6 +42,11 @@ export default function Settings({ themes, state, setState }: Props) {
         top: '30px',
         left: '0px',
         zIndex: '2',
+      }}
+      onKeyDown={(e) => {
+        if (e.code === 'Escape') {
+          setState({ ...state, showSettings: false });
+        }
       }}
     >
       <p style={{ textAlign: 'center', margin: 0 }}>SETTINGS</p>
@@ -85,13 +104,18 @@ export default function Settings({ themes, state, setState }: Props) {
             <td style={{ padding: '10px' }}>Languages: </td>
             <td>
               <select
-                value={state.lang.highlight}
+                value={state.lang.name}
                 onChange={(e) =>
-                  setState({ ...state, lang: languages[e.target.value] })
+                  setState({
+                    ...state,
+                    lang: languages.find(
+                      (l) => l.name === e.target.value
+                    ) as Lang,
+                  })
                 }
               >
-                {Object.keys(languages).map((l, i) => (
-                  <option key={i}>{l}</option>
+                {languages.map((l, i) => (
+                  <option key={i}>{l.name}</option>
                 ))}
               </select>
             </td>
