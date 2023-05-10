@@ -1,4 +1,4 @@
-import { Dispatch, useEffect, useRef } from 'react';
+import { Dispatch, KeyboardEvent, useLayoutEffect, useRef } from 'react';
 import { insertAt } from '@opentf/utils';
 import highlightSyntax from './highlightSyntax';
 import type { EditorState } from './types';
@@ -13,14 +13,52 @@ export default function EditorContent({ state, setState }: Props) {
   const hlCode = highlightSyntax(state);
   const newLinesMatch = [...hlCode.matchAll(/\n/g)];
 
-  useEffect(() => {
-    if (textAreaRef.current !== null) {
+  useLayoutEffect(() => {
+    if (textAreaRef.current !== null && state.setCursor) {
       textAreaRef.current.setSelectionRange(
-        state.cursorPos + state.config.indentSize,
-        state.cursorPos + state.config.indentSize
+        state.cursorPos[0],
+        state.cursorPos[1]
       );
+      setState({ ...state, setCursor: false });
     }
-  }, [state.cursorPos]);
+  }, [state.setCursor]);
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    const indentChar = state.config.indent === 'Tab' ? '\t' : ' ';
+    const { selectionStart, selectionEnd } = e.target as HTMLTextAreaElement;
+
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      setState({
+        ...state,
+        value: insertAt(
+          state.value,
+          selectionStart,
+          indentChar.repeat(state.config.indentSize)
+        ),
+        cursorPos: [
+          selectionStart + state.config.indentSize,
+          selectionEnd + state.config.indentSize,
+        ],
+        setCursor: true,
+      });
+    }
+
+    const pairs = ['{', '}', '`', '`', '"', '"', "'", "'", '(', ')', '[', ']'];
+    const index = pairs.findIndex((i) => i === e.key);
+
+    if (index !== -1) {
+      e.preventDefault();
+      let value = insertAt(state.value, selectionStart, e.key);
+      value = insertAt(value, selectionEnd + 1, pairs[index + 1]);
+      setState({
+        ...state,
+        value,
+        cursorPos: [selectionStart + 1, selectionEnd + 1],
+        setCursor: true,
+      });
+    }
+  };
 
   return (
     <div
@@ -51,7 +89,7 @@ export default function EditorContent({ state, setState }: Props) {
           userSelect: 'none',
         }}
       >
-        {new Array(newLinesMatch.length + 1).fill('').map((a, i) => (
+        {new Array(newLinesMatch.length + 1).fill('').map((_a, i) => (
           <div
             key={i}
             style={{
@@ -105,22 +143,7 @@ export default function EditorContent({ state, setState }: Props) {
           spellCheck={false}
           value={state.value}
           onChange={(e) => setState({ ...state, value: e.target.value })}
-          onKeyDown={(e) => {
-            const indentChar = state.config.indent === 'Tab' ? '\t' : ' ';
-            if (e.key === 'Tab') {
-              e.preventDefault();
-              const { selectionStart } = e.target;
-              setState({
-                ...state,
-                value: insertAt(
-                  state.value,
-                  selectionStart,
-                  indentChar.repeat(state.config.indentSize)
-                ),
-                cursorPos: selectionStart,
-              });
-            }
-          }}
+          onKeyDown={handleKeyDown}
           style={{
             margin: '0px',
             border: '0px',

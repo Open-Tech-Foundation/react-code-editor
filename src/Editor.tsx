@@ -10,7 +10,11 @@ import jsonLang from './languages/json';
 import plainTextLang from './languages/plainText';
 
 export default function Editor(props: EditorProps) {
-  const languages = [jsonLang, plainTextLang, ...(props.languages || [])];
+  const languages: Lang[] = [
+    jsonLang as unknown as Lang,
+    plainTextLang,
+    ...(props.languages || []),
+  ];
   const themes = [lightTheme, darkTheme, ...(props.themes || [])];
   const config: Config = {
     indent: props.config?.indent || 'Space',
@@ -27,9 +31,9 @@ export default function Editor(props: EditorProps) {
     lang: languages.find(
       (i) => i.name === (props.lang || 'Plain Text')
     ) as Lang,
-    cursorPos: 0,
+    cursorPos: [0, 0],
     config,
-    isReady: true,
+    setCursor: false,
   });
 
   const renderContent = () => {
@@ -45,7 +49,7 @@ export default function Editor(props: EditorProps) {
     }
 
     if (state.showProblems) {
-      return <Problems errors={state.errors} warnings={state.warnings} />;
+      return <Problems state={state} setState={setState} />;
     }
 
     return null;
@@ -65,7 +69,7 @@ export default function Editor(props: EditorProps) {
         state={state}
         setState={setState}
       />
-      {state.isReady && <EditorContent setState={setState} state={state} />}
+      <EditorContent setState={setState} state={state} />
       {renderContent()}
     </div>
   );

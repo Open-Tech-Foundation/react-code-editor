@@ -1,5 +1,5 @@
 import React from 'react';
-import { Editor, githubTheme, githubDarkTheme } from '../../src';
+import { Editor } from '../../src';
 import './App.css';
 
 function App() {
@@ -14,18 +14,43 @@ function App() {
   
   ReactDOM.render(<App />, document.getElementById("root"));`;
 
-  const jsonCode = `[
-    {
-      "title": "apples",
-      "count": [12000, 20000],
-      "description": {"text": "...", "sensitive": false}
-    },
-    {
-      "title": "oranges",
-      "count": [17500, null],
-      "description": {"text": "...", "sensitive": false}
-    }
-  ]`;
+  const jsonCode = `{
+   "Actors": [
+     {
+       "name": "Tom Cruise",
+       "age": 56,
+       "Born At": "Syracuse, NY",
+       "Birthdate": "July 3, 1962",
+       "photo": "https://jsonformatter.org/img/tom-cruise.jpg",
+       "wife": null,
+       "weight": 67.5,
+       "hasChildren": true,
+       "hasGreyHair": false,
+       "children": [
+         "Suri",
+         "Isabella Jane",
+         "Connor"
+       ]
+     },
+     {
+       "name": "Robert Downey Jr.",
+       "age": 53,
+       "Born At": "New York City, NY",
+       "Birthdate": "April 4, 1965",
+       "photo": "https://jsonformatter.org/img/Robert-Downey-Jr.jpg",
+       "wife": "Susan Downey",
+       "weight": 77.1,
+       "hasChildren": true,
+       "hasGreyHair": false,
+       "children": [
+         "Indio Falconer",
+         "Avri Roel",
+         "Exton Elias"
+       ]
+     }
+   ]
+ }
+ `;
 
   const cssCode = `@font-face {
     font-family: Chunkfive; src: url('Chunkfive.otf');
@@ -59,9 +84,7 @@ function App() {
           /> */}
           <Editor
             value={jsonCode}
-            themes={[githubTheme, githubDarkTheme]}
             style={{ height: '300px', marginTop: '15px' }}
-            title="config.json"
             lang="JSON"
             // config={{ textArea: { readOnly: true } }}
           />

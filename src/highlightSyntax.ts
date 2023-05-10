@@ -5,6 +5,8 @@ function startsWith(s: string, re: string) {
   return match && match.index === 0;
 }
 
+type CodeToken = ({ t: string; v: string } | string)[];
+
 export default function highlightSyntax(state: EditorState) {
   if (state.lang.tokens.length === 0) {
     return state.value;
@@ -12,7 +14,7 @@ export default function highlightSyntax(state: EditorState) {
 
   let str = '';
   let out = '';
-  const codeTokens = [];
+  const codeTokens: CodeToken = [];
   const spaceTokens = state.lang.tokens.filter((t) => t.s);
 
   function setCodeTokens(s: string) {
@@ -24,15 +26,15 @@ export default function highlightSyntax(state: EditorState) {
     });
 
     if (match) {
-      const first = s.slice(i, match.index);
+      const first = s.slice(i, (match as RegExpExecArray).index);
 
       if (first) {
         i += first.length;
         codeTokens.push(setCodeTokens(first));
       }
 
-      codeTokens.push({ t: tk?.t, v: match[0] });
-      i += match[0].length;
+      codeTokens.push({ t: tk?.t as string, v: match[0] });
+      i += (match[0] as string).length;
       const last = s.slice(i);
       if (last) {
         i += last.length;
@@ -46,6 +48,11 @@ export default function highlightSyntax(state: EditorState) {
   for (let i = 0; i < state.value.length; i++) {
     const char = state.value[i];
 
+    if (char === '\t') {
+      codeTokens.push(char);
+      continue;
+    }
+
     if (char === ' ') {
       const matchBegin = spaceTokens.some((stk) => startsWith(str, stk.b));
       if (matchBegin) {
@@ -56,6 +63,7 @@ export default function highlightSyntax(state: EditorState) {
       }
       continue;
     }
+
     if (char === '\n') {
       str = setCodeTokens(str);
       codeTokens.push(char);

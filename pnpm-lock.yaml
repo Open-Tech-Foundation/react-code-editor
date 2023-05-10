@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@changesets/cli': ^2.26.0
   '@opentf/eslint-config-base': ^0.1.0
-  '@opentf/utils': ^0.16.3
+  '@opentf/utils': ^0.18.0
   '@tsconfig/node-lts-strictest-esm': ^18.12.1
   '@types/prettier': ^2.7.2
   '@types/react': ^18.0.28
@@ -16,7 +16,7 @@ specifiers:
   typescript: 5.0.2
 
 dependencies:
-  '@opentf/utils': 0.16.3
+  '@opentf/utils': 0.18.0
   prettier: 2.8.5
 
 devDependencies:
@@ -1144,8 +1144,8 @@ packages:
       - typescript
     dev: true
 
-  /@opentf/utils/0.16.3:
-    resolution: {integrity: sha512-xAjK4t+yIYzwNk2sk4lop9UbQNvMNiOUp2LDF3NRI5xW64jg+j/x4uruBploTXmQHe82xzABFT2O80V0vvB5kA==}
+  /@opentf/utils/0.18.0:
+    resolution: {integrity: sha512-bQprYWdwajXZlGvw95ZE6fQkpcJ3vKczj9V0nMnbk8guzFrAnwAvC/s6bb5Vb1fHe7MIZCzHXRZiYnzGpOP2MQ==}
     engines: {node: ^14.17.0 || >=16.0.0}
     dev: false
 

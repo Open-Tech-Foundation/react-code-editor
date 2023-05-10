@@ -1,10 +1,19 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
 import prettier from 'prettier/esm/standalone.mjs';
+// @ts-ignore
 import babelParser from 'prettier/esm/parser-babel.mjs';
+// @ts-ignore
 import cssParser from 'prettier/esm/parser-postcss.mjs';
+// @ts-ignore
 import graphqlParser from 'prettier/esm/parser-graphql.mjs';
+// @ts-ignore
 import htmlParser from 'prettier/esm/parser-html.mjs';
+// @ts-ignore
 import markdownParser from 'prettier/esm/parser-markdown.mjs';
+// @ts-ignore
 import typescriptParser from 'prettier/esm/parser-typescript.mjs';
+// @ts-ignore
 import yamlParser from 'prettier/esm/parser-yaml.mjs';
 import type { EditorState } from './types';
 import type { Dispatch } from 'react';

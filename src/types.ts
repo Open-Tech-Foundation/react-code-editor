@@ -23,9 +23,9 @@ export interface EditorState {
   showProblems: boolean;
   theme: Theme;
   lang: Lang;
-  cursorPos: number;
+  cursorPos: [number, number];
   config: Config;
-  isReady: boolean;
+  setCursor: boolean;
 }
 export interface EditorProps {
   value: string;

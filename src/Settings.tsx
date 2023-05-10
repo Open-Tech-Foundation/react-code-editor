@@ -16,7 +16,9 @@ export default function Settings({
   const settingsRef = useRef<HTMLDivElement>(null);
 
   const handleThemeChange = (e: FormEvent<HTMLSelectElement>) => {
-    const theme = themes.find((i) => i.name === e.target.value) as Theme;
+    const theme = themes.find(
+      (i) => i.name === (e.target as HTMLSelectElement).value
+    ) as Theme;
     setState({ ...state, theme });
   };
 

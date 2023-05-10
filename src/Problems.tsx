@@ -1,11 +1,23 @@
+import { Dispatch, useEffect, useRef } from 'react';
+import type { EditorState } from './types';
+
 interface Props {
-  errors: string[];
-  warnings: string[];
+  state: EditorState;
+  setState: Dispatch<EditorState>;
 }
 
-export default function Problems({ errors, warnings }: Props) {
+export default function Problems({ state, setState }: Props) {
+  const problemsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (problemsRef.current !== null) {
+      problemsRef.current.focus();
+    }
+  }, []);
+
   return (
     <div
+      ref={problemsRef}
       style={{
         background: 'black',
         color: '#ff5555',
@@ -20,13 +32,19 @@ export default function Problems({ errors, warnings }: Props) {
         lineHeight: '1.3',
         fontWeight: 'bold',
       }}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.code === 'Escape') {
+          setState({ ...state, showProblems: false });
+        }
+      }}
     >
-      {errors.map((err, i) => (
+      {state.errors.map((err, i) => (
         <div key={i} style={{ padding: '10px', display: 'inline-block' }}>
           <pre>{err}</pre>
         </div>
       ))}
-      {warnings.map((w, i) => (
+      {state.warnings.map((w, i) => (
         <div key={i} style={{ padding: '10px', display: 'inline-block' }}>
           {w}
         </div>
