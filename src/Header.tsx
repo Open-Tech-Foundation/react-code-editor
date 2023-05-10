@@ -22,9 +22,10 @@ interface Props {
   title: string;
   state: EditorState;
   setState: Dispatch<EditorState>;
+  onChange: (value: string) => void;
 }
 
-export default function Header({ title, state, setState }: Props) {
+export default function Header({ title, state, setState, onChange }: Props) {
   const handleFormat = () => {
     try {
       const value = prettier.format(state.value, {
@@ -39,6 +40,9 @@ export default function Header({ title, state, setState }: Props) {
           yamlParser,
         ],
       });
+      if (onChange) {
+        onChange(value);
+      }
       setState({ ...state, value, errors: [] });
     } catch (error: unknown) {
       setState({ ...state, errors: [(error as Error).message] });

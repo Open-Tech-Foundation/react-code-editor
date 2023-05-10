@@ -68,8 +68,13 @@ export default function Editor(props: EditorProps) {
         title={props.title || 'Untitled'}
         state={state}
         setState={setState}
+        onChange={props.onChange}
       />
-      <EditorContent setState={setState} state={state} />
+      <EditorContent
+        setState={setState}
+        state={state}
+        onChange={props.onChange}
+      />
       {renderContent()}
     </div>
   );

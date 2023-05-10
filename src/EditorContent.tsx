@@ -6,9 +6,10 @@ import type { EditorState } from './types';
 interface Props {
   state: EditorState;
   setState: Dispatch<EditorState>;
+  onChange: (value: string) => void;
 }
 
-export default function EditorContent({ state, setState }: Props) {
+export default function EditorContent({ state, setState, onChange }: Props) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const hlCode = highlightSyntax(state);
   const newLinesMatch = [...hlCode.matchAll(/\n/g)];
@@ -29,13 +30,17 @@ export default function EditorContent({ state, setState }: Props) {
 
     if (e.key === 'Tab') {
       e.preventDefault();
+      const value = insertAt(
+        state.value,
+        selectionStart,
+        indentChar.repeat(state.config.indentSize)
+      );
+      if (onChange) {
+        onChange(value);
+      }
       setState({
         ...state,
-        value: insertAt(
-          state.value,
-          selectionStart,
-          indentChar.repeat(state.config.indentSize)
-        ),
+        value,
         cursorPos: [
           selectionStart + state.config.indentSize,
           selectionEnd + state.config.indentSize,
@@ -51,6 +56,9 @@ export default function EditorContent({ state, setState }: Props) {
       e.preventDefault();
       let value = insertAt(state.value, selectionStart, e.key);
       value = insertAt(value, selectionEnd + 1, pairs[index + 1]);
+      if (onChange) {
+        onChange(value);
+      }
       setState({
         ...state,
         value,
@@ -142,7 +150,12 @@ export default function EditorContent({ state, setState }: Props) {
           ref={textAreaRef}
           spellCheck={false}
           value={state.value}
-          onChange={(e) => setState({ ...state, value: e.target.value })}
+          onChange={(e) => {
+            if (onChange) {
+              onChange(e.target.value);
+            }
+            setState({ ...state, value: e.target.value });
+          }}
           onKeyDown={handleKeyDown}
           style={{
             margin: '0px',

@@ -4,7 +4,7 @@
 
 ⚡ by [OPEN TECH FOUNDATION](https://open-tech-foundation.pages.dev/)
 
-<!-- ![Screenshot](./Screenshot.png) -->
+![Screenshot](./demo.gif)
 
 </div>
 
@@ -12,13 +12,15 @@
 
 ## Features
 
-- Simple Editor
+- Simple Editor (HTML `Textarea` based)
 
-- Syntax Highlighting (Based on [highlight.js](https://highlightjs.org/))
+- Syntax Highlighting
 
 - Multiple languages & themes are supported.
 
 - Format code with [Prettier](https://prettier.io/)
+
+- Syntax Errors via [Prettier](https://prettier.io/) formating
 
 - Line numbers
 
@@ -56,6 +58,54 @@ export default function App() {
   return <Editor value={code} onChange={handleChange} />;
 }
 ```
+
+## Props
+
+| Name      | Type     | Required | Default      | Description                                                                                                    |
+| --------- | -------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------- |
+| value     | string   | Yes      | ''           | The value of the editor.                                                                                       |
+| onChange  | Function | No       | undefined    | The handler function for the value change event.                                                                   |
+| themes    | Theme[]  | No       | []           | You can pass aditional themes to the editor via this prop.                                                     |
+| languages | Lang[]   | No       | []           | By default only limited set of languages supported, you can extend additional languages support via this prop. |
+| lang      | string   | No       | 'Plain Text' | The language syntax highlighting.                                                                              |
+| theme     | string   | No       | 'Light'      | The theme name to apply a theme.                                                                               |
+| style     | object   | No       | {}           | The styles will be applied to the root element of the editor component.                                        |
+| title     | string   | No       | 'Untitled'   | The editor title. Eg: `Config.json`                                                                            |
+| config    | object   | No       | {}           | See the below table for config object.                                                                         |
+
+### Config:
+
+| Name       | Type   | Required | Default | Description                                          |
+| ---------- | ------ | -------- | ------- | ---------------------------------------------------- |
+| indent     | string | No       | 'Space' | Indent code using `"Space"` or `"Tab"`                   |
+| indentSize | number | No       | 2       | The indent size.                                |
+| textArea   | object | No       | {}      | Any additional props for the code editor `textarea` element. |
+
+## Supported Languages (With formatting)
+
+✔️ JSON
+
+⏳ HTML
+
+⏳ JavaScript
+
+⏳ TypeScript
+
+⏳ CSS
+
+⏳ GraphQL
+
+⏳ TOML
+
+⏳ YAML
+
+## Supported Languages (Without formatting)
+
+✔️ Plain Text
+
+⏳ Bash
+
+⏳ Dockerfile
 
 ## License
 

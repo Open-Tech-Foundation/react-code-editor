@@ -29,6 +29,7 @@ export interface EditorState {
 }
 export interface EditorProps {
   value: string;
+  onChange: (value: string) => void;
   themes?: Theme[];
   languages?: Lang[];
   lang?: (typeof Languages)[number];
