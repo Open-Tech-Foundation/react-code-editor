@@ -1,5 +1,11 @@
 # @opentf/react-code-editor
 
+## 0.7.0
+
+### Minor Changes
+
+- 0eed190: Fixed preventing form from submitting when the buttons inside editor clicked.
+
 ## 0.6.0
 
 ### Minor Changes
