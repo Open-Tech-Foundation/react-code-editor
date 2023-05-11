@@ -64,21 +64,21 @@ export default function App() {
 | Name      | Type     | Required | Default      | Description                                                                                                    |
 | --------- | -------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------- |
 | value     | string   | Yes      | ''           | The value of the editor.                                                                                       |
-| onChange  | Function | No       | undefined    | The handler function for the value change event.                                                                   |
+| onChange  | Function | No       | undefined    | The handler function for the value change event.                                                               |
 | themes    | Theme[]  | No       | []           | You can pass aditional themes to the editor via this prop.                                                     |
 | languages | Lang[]   | No       | []           | By default only limited set of languages supported, you can extend additional languages support via this prop. |
 | lang      | string   | No       | 'Plain Text' | The language syntax highlighting.                                                                              |
-| theme     | string   | No       | 'Light'      | The theme name to apply a theme. [See list of themes below.](#supported-thems)                                                                               |
+| theme     | string   | No       | 'Light'      | The theme name to apply a theme. [See list of themes below.](#supported-themes)                                |
 | style     | object   | No       | {}           | The styles will be applied to the root element of the editor component.                                        |
 | title     | string   | No       | 'Untitled'   | The editor title. Eg: `Config.json`                                                                            |
 | config    | object   | No       | {}           | See the below table for config object.                                                                         |
 
 ### Config:
 
-| Name       | Type   | Required | Default | Description                                          |
-| ---------- | ------ | -------- | ------- | ---------------------------------------------------- |
-| indent     | string | No       | 'Space' | Indent code using `"Space"` or `"Tab"`                   |
-| indentSize | number | No       | 2       | The indent size.                                |
+| Name       | Type   | Required | Default | Description                                                  |
+| ---------- | ------ | -------- | ------- | ------------------------------------------------------------ |
+| indent     | string | No       | 'Space' | Indent code using `"Space"` or `"Tab"`                       |
+| indentSize | number | No       | 2       | The indent size.                                             |
 | textArea   | object | No       | {}      | Any additional props for the code editor `textarea` element. |
 
 ## Supported Languages (With formatting)
@@ -107,13 +107,13 @@ export default function App() {
 
 ⏳ Dockerfile
 
-## Supported Thems
+## Supported Themes
 
 - Dark
 
 - Light (Default)
 
-**You can create your own themes easily, please refer any existing theme objects in the repo.**
+**💡You can create your own themes easily, please refer any existing theme objects in the repo.**
 
 ## License
 
