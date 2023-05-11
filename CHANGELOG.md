@@ -1,5 +1,11 @@
 # @opentf/react-code-editor
 
+## 0.5.1
+
+### Patch Changes
+
+- 61bd221: Fixed typo in readme
+
 ## 0.5.0
 
 ### Minor Changes
