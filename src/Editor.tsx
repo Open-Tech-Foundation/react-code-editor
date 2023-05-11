@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './Header';
 import EditorContent from './EditorContent';
 import Settings from './Settings';
@@ -35,6 +35,17 @@ export default function Editor(props: EditorProps) {
     config,
     setCursor: false,
   });
+
+  useEffect(() => {
+    setState({
+      ...state,
+      value: props.value,
+      theme: themes.find((i) => i.name === (props.theme || 'Light')) as Theme,
+      lang: languages.find(
+        (i) => i.name === (props.lang || 'Plain Text')
+      ) as Lang,
+    });
+  }, [props]);
 
   const renderContent = () => {
     if (state.showSettings) {

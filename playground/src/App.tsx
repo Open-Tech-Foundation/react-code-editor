@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Editor } from '../../src';
 import './App.css';
 
@@ -34,10 +34,29 @@ function App() {
     }
   }`;
 
+  const [code, setCode] = useState('');
+  const [style, setStyle] = useState({});
+
   return (
     <div className="App">
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 500px 1fr' }}>
-        <div></div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '30% 500px 1fr',
+          gridGap: '10px',
+        }}
+      >
+        <div>
+          <button
+            onClick={() => {
+              setCode(jsonCode);
+              setStyle({ height: '300px', marginTop: '15px' });
+            }}
+          >
+            Change code
+          </button>
+          <pre style={{ overflow: 'auto' }}>{code}</pre>
+        </div>
         <div>
           {/* <Editor
             code={code}
@@ -48,9 +67,9 @@ function App() {
             lang="js"
           /> */}
           <Editor
-            value={jsonCode}
+            value={code}
             onChange={(v) => console.log(v)}
-            style={{ height: '300px', marginTop: '15px' }}
+            style={style}
             lang="JSON"
             // config={{ textArea: { readOnly: true } }}
           />
