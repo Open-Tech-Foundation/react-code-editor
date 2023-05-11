@@ -1,5 +1,11 @@
 # @opentf/react-code-editor
 
+## 0.3.0
+
+### Minor Changes
+
+- f99751c: Prevent esc key input event in settings & problems popup.
+
 ## 0.2.0
 
 ### Minor Changes
