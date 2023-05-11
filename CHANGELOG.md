@@ -1,5 +1,11 @@
 # @opentf/react-code-editor
 
+## 0.6.0
+
+### Minor Changes
+
+- 370dc53: Fixed space appended before highlighting text
+
 ## 0.5.1
 
 ### Patch Changes
