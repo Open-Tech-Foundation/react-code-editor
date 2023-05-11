@@ -1,5 +1,11 @@
 # @opentf/react-code-editor
 
+## 0.5.0
+
+### Minor Changes
+
+- f80ae80: Fixed escape key propagtion in settings & problems popups.
+
 ## 0.4.0
 
 ### Minor Changes
