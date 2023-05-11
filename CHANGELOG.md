@@ -1,5 +1,11 @@
 # @opentf/react-code-editor
 
+## 0.4.0
+
+### Minor Changes
+
+- 2935ca4: Fixed the props not updating the editor state.
+
 ## 0.3.0
 
 ### Minor Changes
