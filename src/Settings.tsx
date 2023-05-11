@@ -47,7 +47,7 @@ export default function Settings({
       }}
       onKeyDown={(e) => {
         if (e.code === 'Escape') {
-          e.preventDefault();
+          e.stopPropagation();
           setState({ ...state, showSettings: false });
         }
       }}

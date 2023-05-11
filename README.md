@@ -68,7 +68,7 @@ export default function App() {
 | themes    | Theme[]  | No       | []           | You can pass aditional themes to the editor via this prop.                                                     |
 | languages | Lang[]   | No       | []           | By default only limited set of languages supported, you can extend additional languages support via this prop. |
 | lang      | string   | No       | 'Plain Text' | The language syntax highlighting.                                                                              |
-| theme     | string   | No       | 'Light'      | The theme name to apply a theme.                                                                               |
+| theme     | string   | No       | 'Light'      | The theme name to apply a theme. [See list of themes below.](#supported-thems)                                                                               |
 | style     | object   | No       | {}           | The styles will be applied to the root element of the editor component.                                        |
 | title     | string   | No       | 'Untitled'   | The editor title. Eg: `Config.json`                                                                            |
 | config    | object   | No       | {}           | See the below table for config object.                                                                         |
@@ -106,6 +106,14 @@ export default function App() {
 ⏳ Bash
 
 ⏳ Dockerfile
+
+## Supported Thems
+
+- Dark
+
+- Light (Default)
+
+**You can create your own themes easily, please refer any existing theme objects in the repo.**
 
 ## License
 

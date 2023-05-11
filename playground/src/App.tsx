@@ -68,7 +68,7 @@ function App() {
           /> */}
           <Editor
             value={code}
-            onChange={(v) => console.log(v)}
+            onChange={(v) => setCode(v)}
             style={style}
             lang="JSON"
             // config={{ textArea: { readOnly: true } }}

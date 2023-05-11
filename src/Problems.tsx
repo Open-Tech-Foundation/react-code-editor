@@ -35,7 +35,7 @@ export default function Problems({ state, setState }: Props) {
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.code === 'Escape') {
-          e.preventDefault();
+          e.stopPropagation();
           setState({ ...state, showProblems: false });
         }
       }}
