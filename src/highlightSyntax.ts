@@ -58,8 +58,7 @@ export default function highlightSyntax(state: EditorState) {
       if (matchBegin) {
         str += char;
       } else {
-        codeTokens.push(char);
-        setCodeTokens(str);
+        str = setCodeTokens(str + char);
       }
       continue;
     }
