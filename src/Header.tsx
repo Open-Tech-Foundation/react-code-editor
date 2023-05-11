@@ -69,6 +69,7 @@ export default function Header({ title, state, setState, onChange }: Props) {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {state.errors.length > 0 && (
           <button
+            type="button"
             title="Problems"
             style={{
               marginRight: '10px',
@@ -106,6 +107,7 @@ export default function Header({ title, state, setState, onChange }: Props) {
           </button>
         )}
         <button
+          type="button"
           style={{
             marginRight: '10px',
             fontSize: '12px',
@@ -131,6 +133,7 @@ export default function Header({ title, state, setState, onChange }: Props) {
           </svg>
         </button>
         <button
+          type="button"
           title="Settings"
           style={{
             border: 0,
