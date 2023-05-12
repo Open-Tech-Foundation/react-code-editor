@@ -1,5 +1,11 @@
 # @opentf/react-code-editor
 
+## 0.8.0
+
+### Minor Changes
+
+- dc51540: Fixed highlighting core
+
 ## 0.7.0
 
 ### Minor Changes
