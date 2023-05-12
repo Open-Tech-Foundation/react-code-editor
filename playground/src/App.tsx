@@ -14,8 +14,8 @@ function App() {
   
   ReactDOM.render(<App />, document.getElementById("root"));`;
 
-  const jsonCode = `{"Actors":[{"name":"Tom Cruise","age":56,"Born At":"Syracuse, NY","Birthdate":"July 3, 1962","photo":"https://jsonformatter.org/img/tom-cruise.jpg","wife":null,"weight":67.5,"hasChildren":true,"hasGreyHair":false,"children":["Suri","Isabella Jane","Connor"]},{"name":"Robert Downey Jr.","age":53,"Born At":"New York City, NY","Birthdate":"April 4, 1965","photo":"https://jsonformatter.org/img/Robert-Downey-Jr.jpg","wife":"Susan Downey","weight":77.1,"hasChildren":true,"hasGreyHair":false,"children":["Indio Falconer","Avri Roel","Exton Elias"]}]}
- `;
+  const jsonCode = `{"Actors":[{"name":"Tom Cruise","age":56,"Born At":"Syracuse, NY","Birthdate":"July 3, 1962","photo":"https://jsonformatter.org/img/tom-cruise.jpg","wife":null,"weight":67.5,"hasChildren":true,"hasGreyHair":false,"children":["Suri","Isabella Jane","Connor"]},{"name":"Robert Downey Jr.","age":53,"Born At":"New York City, NY","Birthdate":"April 4, 1965","photo":"https://jsonformatter.org/img/Robert-Downey-Jr.jpg","wife":"Susan Downey","weight":77.1,"hasChildren":true,"hasGreyHair":false,"children":["Indio Falconer","Avri Roel","Exton Elias"]}]}`;
+  const jsonCode2 = `{"Actors":[{"name":"Tom Cruise","age":56,"Born At":"Syracuse, NY","Birthdate":"July 3, 1962"}]}`;
 
   const cssCode = `@font-face {
     font-family: Chunkfive; src: url('Chunkfive.otf');
@@ -34,7 +34,7 @@ function App() {
     }
   }`;
 
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(jsonCode);
   const [style, setStyle] = useState({});
 
   return (
@@ -42,20 +42,19 @@ function App() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: '30% 500px 1fr',
+          gridTemplateColumns: '30% 40% 30%',
           gridGap: '10px',
         }}
       >
         <div>
-          <button
+          {/* <button
             onClick={() => {
               setCode(jsonCode);
-              setStyle({ height: '300px', marginTop: '15px' });
             }}
           >
             Change code
           </button>
-          <pre style={{ overflow: 'auto' }}>{code}</pre>
+          <pre style={{ overflow: 'auto' }}>{code}</pre> */}
         </div>
         <div>
           {/* <Editor
@@ -66,13 +65,21 @@ function App() {
             title="TypeScript"
             lang="js"
           /> */}
-          <Editor
-            value={code}
-            onChange={(v) => setCode(v)}
-            style={style}
-            lang="JSON"
-            // config={{ textArea: { readOnly: true } }}
-          />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              console.log('Form submitted');
+            }}
+          >
+            <Editor
+              value={code}
+              onChange={(v) => setCode(v)}
+              lang="JSON"
+              style={{ height: '300px', marginTop: '15px' }}
+
+              // config={{ textArea: { readOnly: true } }}
+            />
+          </form>
         </div>
         <div></div>
       </div>

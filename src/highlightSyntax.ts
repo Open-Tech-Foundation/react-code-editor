@@ -1,86 +1,105 @@
-import type { EditorState } from './types';
+import type { EditorState, Theme, Token } from './types';
 
-function startsWith(s: string, re: string) {
-  const match = new RegExp(re).exec(s);
-  return match && match.index === 0;
-}
+type CodeTokenObj = { t: string; v: string };
 
-type CodeToken = ({ t: string; v: string } | string)[];
+type CodeTokens = (CodeTokenObj | string)[];
 
-export default function highlightSyntax(state: EditorState) {
-  if (state.lang.tokens.length === 0) {
-    return state.value;
-  }
-
-  let str = '';
+function render(codeTokens: CodeTokens, theme: Theme) {
   let out = '';
-  const codeTokens: CodeToken = [];
-  const spaceTokens = state.lang.tokens.filter((t) => t.s);
-
-  function setCodeTokens(s: string) {
-    let i = 0;
-    let match;
-    const tk = state.lang.tokens.find((tk) => {
-      match = s.match(tk.p);
-      return match !== null;
-    });
-
-    if (match) {
-      const first = s.slice(i, (match as RegExpExecArray).index);
-
-      if (first) {
-        i += first.length;
-        codeTokens.push(setCodeTokens(first));
-      }
-
-      codeTokens.push({ t: tk?.t as string, v: match[0] });
-      i += (match[0] as string).length;
-      const last = s.slice(i);
-      if (last) {
-        i += last.length;
-        codeTokens.push(setCodeTokens(last));
-      }
-    }
-
-    return s.slice(i);
-  }
-
-  for (let i = 0; i < state.value.length; i++) {
-    const char = state.value[i];
-
-    if (char === '\t') {
-      codeTokens.push(char);
-      continue;
-    }
-
-    if (char === ' ') {
-      const matchBegin = spaceTokens.some((stk) => startsWith(str, stk.b));
-      if (matchBegin) {
-        str += char;
-      } else {
-        str = setCodeTokens(str + char);
-      }
-      continue;
-    }
-
-    if (char === '\n') {
-      str = setCodeTokens(str);
-      codeTokens.push(char);
-      continue;
-    }
-
-    str += char;
-  }
-
-  codeTokens.push(setCodeTokens(str));
-
   codeTokens.forEach((ct) => {
-    if (typeof ct === 'object') {
-      out += `<span style="${state.theme.getStyles(ct.t)}">${ct.v}</span>`;
+    if (typeof ct !== 'string') {
+      out += `<span style="${theme.getStyles(ct.t)}">${ct.v}</span>`;
       return;
     }
     out += ct;
   });
 
   return out;
+}
+
+function matchTokens(s: string, tokens: Token[]) {
+  const matchArr: CodeTokens = [];
+  let match: RegExpMatchArray | null = null;
+  const tk = tokens.find((tk) => {
+    match = s.match(tk.p);
+    return match !== null;
+  });
+
+  if (match) {
+    const prefix = s.slice(0, (match as RegExpMatchArray).index);
+    if (prefix) {
+      const arr = matchTokens(prefix, tokens);
+      if (arr.some((i) => typeof i === 'string')) {
+        matchArr.push(s);
+        return matchArr;
+      }
+      matchArr.push(...arr);
+    }
+
+    matchArr.push({ t: tk?.t as string, v: match[0] });
+
+    const suffix = s.slice(
+      ((match as RegExpMatchArray).index as number) +
+        (match[0] as string).length
+    );
+    if (suffix) {
+      const arr = matchTokens(suffix, tokens);
+      matchArr.push(...arr);
+    }
+  } else {
+    matchArr.push(s);
+  }
+
+  return matchArr;
+}
+
+function transform(code: string, tokens: Token[], codeTokens: CodeTokens) {
+  let str = '';
+
+  for (let i = 0; i < code.length; i++) {
+    const char = code[i];
+
+    if (char === '\t') {
+      codeTokens.push(char);
+      continue;
+    }
+
+    if (char === ' ' || char === '\n') {
+      const arr = matchTokens(str + char, tokens);
+
+      if (!arr.some((i) => typeof i === 'string')) {
+        str = '';
+      }
+
+      arr.forEach((m) => {
+        if (typeof m === 'string') {
+          str = m;
+        } else {
+          codeTokens.push(m);
+        }
+      });
+
+      if (str === char) {
+        codeTokens.push(char);
+        str = '';
+      }
+      continue;
+    }
+
+    str += char;
+  }
+
+  codeTokens.push(...matchTokens(str, tokens));
+}
+
+export default function highlightSyntax(state: EditorState) {
+  const codeTokens: CodeTokens = [];
+
+  if (state.lang.tokens.length === 0) {
+    return state.value;
+  }
+
+  transform(state.value, state.lang.tokens, codeTokens);
+
+  return render(codeTokens, state.theme);
 }
