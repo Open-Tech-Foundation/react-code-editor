@@ -1,5 +1,11 @@
 # @opentf/react-code-editor
 
+## 0.9.0
+
+### Minor Changes
+
+- af5d558: Fixed changing props resetting the editor state.
+
 ## 0.8.0
 
 ### Minor Changes
