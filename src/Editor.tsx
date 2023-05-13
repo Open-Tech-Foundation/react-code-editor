@@ -40,12 +40,24 @@ export default function Editor(props: EditorProps) {
     setState({
       ...state,
       value: props.value,
+    });
+  }, [props.value]);
+
+  useEffect(() => {
+    setState({
+      ...state,
       theme: themes.find((i) => i.name === (props.theme || 'Light')) as Theme,
+    });
+  }, [props.theme]);
+
+  useEffect(() => {
+    setState({
+      ...state,
       lang: languages.find(
         (i) => i.name === (props.lang || 'Plain Text')
       ) as Lang,
     });
-  }, [props]);
+  }, [props.lang]);
 
   const renderContent = () => {
     if (state.showSettings) {
