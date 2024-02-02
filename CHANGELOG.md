@@ -1,5 +1,11 @@
 # @opentf/react-code-editor
 
+## 0.10.0
+
+### Minor Changes
+
+- 2bc2fd0: Added pkg provenant support.
+
 ## 0.9.0
 
 ### Minor Changes
