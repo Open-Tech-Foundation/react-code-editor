@@ -1,8 +1,10 @@
+<img align="left" src="https://open-tech-foundation.pages.dev/img/Logo.svg" width="50" height="50">
+
+&nbsp;[OPEN TECH FOUNDATION](https://open-tech-foundation.pages.dev/)
+
 <div align="center">
 
 # React Code Editor
-
-⚡ by [OPEN TECH FOUNDATION](https://open-tech-foundation.pages.dev/)
 
 ![Screenshot](./demo.gif)
 
@@ -26,22 +28,20 @@
 
 ## Installation
 
-Using npm
-
 ```sh
 npm install @opentf/react-code-editor
 ```
-
-Using Yarn
 
 ```sh
 yarn add @opentf/react-code-editor
 ```
 
-Using pnpm
-
 ```sh
 pnpm add @opentf/react-code-editor
+```
+
+```sh
+bun add @opentf/react-code-editor
 ```
 
 ## Usage
